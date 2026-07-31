@@ -3,7 +3,7 @@ OJECTIVE 1
 OBEJECTIVE 2
 <img width="1827" height="733" alt="image" src="https://github.com/user-attachments/assets/21e528e5-6c67-4316-b373-f9c152da2d28" />
 OBJECTIVE 3
-<img width="1816" height="745" alt="image" src="https://github.com/user-attachments/assets/de8020e7-2e02-4863-9a25-35c4591941f2" />
+<img width="1814" height="745" alt="image" src="https://github.com/user-attachments/assets/ff29f506-5f31-4c69-966c-64ad88818ce7" />
 
 
 
