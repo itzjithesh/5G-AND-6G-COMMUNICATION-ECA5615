@@ -1,20 +1,27 @@
 clc; clear; close all;
-TotalSlots = 8;
-AllocatedSlots = 6;
-FreeSlots = TotalSlots - AllocatedSlots;
-Utilization = (AllocatedSlots/TotalSlots)*100;
-disp('Frame Utilization (%)')
-disp(Utilization)
+Users = 1:8; % Total users
+TotalSlots = 5; % Available slots
+Alloc = zeros(1,8); % Initialize allocation
+Alloc(1:TotalSlots) = 1; % Assign slots to first users
+Blocked = 1 - Alloc; % Remaining users blocked
+disp('User Wise Slot Allocation')
+disp(table(Users',Alloc','VariableNames',{'User','Status(1=Allocated,0=Blocked)'}))
 figure
-% Graph 1: Simple Line Plot (SAFE - no bar function)
+% Graph 1: Allocation per user
 subplot(2,1,1)
-plot([1 2],[AllocatedSlots FreeSlots],'-o','LineWidth',2)
-title('GSM Frame Utilization (Allocated vs Free)')
-xlabel('Slot Type Index (1=Allocated, 2=Free)')
-ylabel('Number of Slots')
+stem(Users,Alloc,'filled','LineWidth',2)
+title('TDMA Slot Allocation per User')
+xlabel('User Index')
+ylabel('Slot Status (1=Allocated, 0=Blocked)')
+ylim([-0.2 1.2])
 grid on
-% Graph 2: Pie Chart (SAFE)
+% Graph 2: System view (safe alternative to bar)
 subplot(2,1,2)
-pie([AllocatedSlots FreeSlots])
-title('Slot Distribution in GSM Frame')
-legend('Allocated','Free')
+plot(Users,Alloc,'-o','LineWidth',2)
+hold on
+plot(Users,Blocked,'-s','LineWidth',2)
+title('TDMA Slot Utilization Analysis')
+xlabel('User Index')
+ylabel('Status')
+legend('Allocated','Blocked')
+grid on
