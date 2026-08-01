@@ -1,27 +1,25 @@
 clc; clear; close all;
-Users = 1:8; % Total users
-TotalSlots = 5; % Available slots
-Alloc = zeros(1,8); % Initialize allocation
-Alloc(1:TotalSlots) = 1; % Assign slots to first users
-Blocked = 1 - Alloc; % Remaining users blocked
-disp('User Wise Slot Allocation')
-disp(table(Users',Alloc','VariableNames',{'User','Status(1=Allocated,0=Blocked)'}))
+d = 0.1:0.1:5; % Distance (km)
+f = [900 3500 28000]; % Frequency (MHz)
+PL1 = 32.44 + 20*log10(f(1)) + 20*log10(d);
+PL2 = 32.44 + 20*log10(f(2)) + 20*log10(d);
+PL3 = 32.44 + 20*log10(f(3)) + 20*log10(d);
 figure
-% Graph 1: Allocation per user
+% -------- Graph 1 --------
 subplot(2,1,1)
-stem(Users,Alloc,'filled','LineWidth',2)
-title('TDMA Slot Allocation per User')
-xlabel('User Index')
-ylabel('Slot Status (1=Allocated, 0=Blocked)')
-ylim([-0.2 1.2])
+plot(d,PL1,'b','LineWidth',2); hold on
+plot(d,PL2,'r','LineWidth',2)
+plot(d,PL3,'k','LineWidth',2)
+title('Propagation Loss vs Distance')
+xlabel('Distance (km)')
+ylabel('Loss (dB)')
 grid on
-% Graph 2: System view (safe alternative to bar)
+% -------- Graph 2 (NO legend used to avoid error) --------
 subplot(2,1,2)
-plot(Users,Alloc,'-o','LineWidth',2)
-hold on
-plot(Users,Blocked,'-s','LineWidth',2)
-title('TDMA Slot Utilization Analysis')
-xlabel('User Index')
-ylabel('Status')
-legend('Allocated','Blocked')
+Freq = [900 3500 28000];
+Loss = [PL1(10) PL2(10) PL3(10)];
+plot(Freq,Loss,'-o','LineWidth',2)
+title('Propagation Loss vs Frequency')
+xlabel('Frequency (MHz)')
+ylabel('Loss (dB)')
 grid on
