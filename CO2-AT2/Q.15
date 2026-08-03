@@ -1,1 +1,33 @@
+clc; clear; close all;
 
+%% Parameters
+N = 16;                  % Number of antenna elements
+d = 0.5;                 % Element spacing (in wavelengths)
+theta_scan = 30;         % Desired scan angle (degrees)
+freq = 2.4e9;            % Frequency (Hz)
+c = 3e8;                 % Speed of light
+lambda = c/freq;         % Wavelength
+
+%% Steering Vector
+theta = -90:0.1:90;      % Angle range
+beta = -2*pi*d/lambda*sin(theta_scan*pi/180); % Phase shift for steering
+w = exp(1j*(0:N-1)'*beta); % Weight vector
+
+%% Array Factor
+AF = zeros(size(theta));
+for k = 1:length(theta)
+    AF(k) = abs(sum(w .* exp(1j*(0:N-1)'*2*pi*d/lambda*sin(theta(k)*pi/180))));
+end
+AF = AF/max(AF); % Normalize gain
+
+%% Plot Beam Pattern
+figure;
+plot(theta,20*log10(AF),'LineWidth',2);
+xlabel('Angle (degrees)'); ylabel('Gain (dB)');
+title('Beam Steering in Antenna Array');
+grid on; axis([-90 90 -40 0]);
+
+%% Beamwidth and Sidelobe Suppression
+[~,mainlobe_idx] = max(AF);
+beamwidth = sum(AF > 0.5); % Approximate beamwidth
+disp(['Approximate Beamwidth: ', num2str(beamwidth*0.1), ' degrees']);
