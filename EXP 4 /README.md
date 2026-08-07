@@ -5,3 +5,6 @@
 
 # OBJECTIVE 2
 <img width="639" height="534" alt="image" src="https://github.com/user-attachments/assets/5556930a-43bd-46d2-8083-c3fb6d973e22" />
+
+# OBJECTIVE 3
+<img width="640" height="541" alt="image" src="https://github.com/user-attachments/assets/dd781ae1-1fe6-4788-9235-5fc31c739014" />
