@@ -1,1 +1,175 @@
+clc;
+clear;
+close all;
 
+%% 5G EDGE-CLOUD TASK OFFLOADING SIMULATION
+% Local, Edge and Cloud execution are compared.
+
+%% 1. Define Tasks
+
+tasks = {
+    'Sensor Processing'
+    'Obstacle Detection'
+    'Video Analytics'
+    'AI Model Training'
+    'Image Processing'
+    'Data Analysis'
+    };
+
+% Task computational requirements (CPU cycles)
+CPU_Cycles = [
+    2
+    8
+    15
+    50
+    20
+    30
+];
+
+% Task data sizes (MB)
+Data_Size = [
+    2
+    10
+    50
+    100
+    30
+    70
+];
+
+% Maximum acceptable latency (ms)
+Latency_Requirement = [
+    100
+    20
+    50
+    500
+    100
+    300
+];
+
+%% 2. System Parameters
+
+% Processing capacities
+Local_Speed = 1;       % relative processing speed
+Edge_Speed  = 10;
+Cloud_Speed = 20;
+
+% Network latency
+Edge_Network_Latency = 5;       % ms
+Cloud_Network_Latency = 50;     % ms
+
+%% 3. Calculate Processing Latency
+
+Local_Time = CPU_Cycles ./ Local_Speed;
+
+Edge_Time = CPU_Cycles ./ Edge_Speed ...
+            + Edge_Network_Latency;
+
+Cloud_Time = CPU_Cycles ./ Cloud_Speed ...
+             + Cloud_Network_Latency;
+
+%% 4. Task Offloading Decision
+
+Decision = strings(length(tasks),1);
+Selected_Latency = zeros(length(tasks),1);
+
+for i = 1:length(tasks)
+
+    % If local processing satisfies latency
+    if Local_Time(i) <= Latency_Requirement(i)
+
+        Decision(i) = "LOCAL";
+        Selected_Latency(i) = Local_Time(i);
+
+    % Otherwise try Edge
+    elseif Edge_Time(i) <= Latency_Requirement(i)
+
+        Decision(i) = "EDGE";
+        Selected_Latency(i) = Edge_Time(i);
+
+    % Otherwise send to Cloud
+    else
+
+        Decision(i) = "CLOUD";
+        Selected_Latency(i) = Cloud_Time(i);
+
+    end
+
+end
+
+%% 5. Display Results
+
+fprintf('\n===== 5G TASK OFFLOADING RESULTS =====\n\n');
+
+fprintf('%-25s %-12s %-12s\n', ...
+    'Task','Location','Latency(ms)');
+
+fprintf('-----------------------------------------------\n');
+
+for i = 1:length(tasks)
+
+    fprintf('%-25s %-12s %-12.2f\n', ...
+        tasks{i}, Decision(i), Selected_Latency(i));
+
+end
+
+%% 6. Calculate Average Latency
+
+Average_Latency = mean(Selected_Latency);
+
+fprintf('\nAverage Selected Latency = %.2f ms\n', ...
+    Average_Latency);
+
+%% 7. Count Task Distribution
+
+Local_Count = sum(Decision == "LOCAL");
+Edge_Count  = sum(Decision == "EDGE");
+Cloud_Count = sum(Decision == "CLOUD");
+
+fprintf('\nTask Distribution:\n');
+
+fprintf('Local Tasks : %d\n', Local_Count);
+fprintf('Edge Tasks  : %d\n', Edge_Count);
+fprintf('Cloud Tasks : %d\n', Cloud_Count);
+
+%% 8. Plot Latency Comparison
+
+figure;
+
+bar([Local_Time Edge_Time Cloud_Time]);
+
+xlabel('Task Number');
+ylabel('Latency (ms)');
+
+title('Latency Comparison: Local vs Edge vs Cloud');
+
+legend('Local','Edge','Cloud');
+
+grid on;
+
+%% 9. Plot Selected Processing Location
+
+figure;
+
+bar([Local_Count Edge_Count Cloud_Count]);
+
+set(gca,'XTickLabel', ...
+    {'Local','Edge','Cloud'});
+
+ylabel('Number of Tasks');
+
+title('5G Task Offloading Distribution');
+
+grid on;
+
+%% 10. Plot Selected Latency
+
+figure;
+
+bar(Selected_Latency);
+
+xlabel('Task Number');
+ylabel('Selected Latency (ms)');
+
+title('Latency After Task Offloading');
+
+grid on;
