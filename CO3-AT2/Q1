@@ -1,1 +1,126 @@
+clc;
+clear;
+close all;
 
+%% EDGE AI BASED INTELLIGENT WIRELESS DATA FILTERING
+% Simulates sensor data generation, Edge AI classification,
+% intelligent filtering and wireless transmission.
+
+%% 1. Generate Wireless Sensor Data
+
+N = 1000;                         % Number of data samples
+t = 1:N;
+
+% Simulated sensor signal
+signal = sin(2*pi*0.02*t) + 0.3*randn(1,N);
+
+% Add abnormal events
+eventIndex = randperm(N,100);
+signal(eventIndex) = signal(eventIndex) + 2;
+
+%% 2. Feature Extraction
+
+% Absolute signal value is used as a simple feature
+feature = abs(signal);
+
+%% 3. Edge AI Classification
+
+% Threshold-based lightweight AI classifier
+threshold = 1.2;
+
+AI_Output = zeros(1,N);
+
+for i = 1:N
+    if feature(i) > threshold
+        AI_Output(i) = 1;       % Important data
+    else
+        AI_Output(i) = 0;       % Unimportant data
+    end
+end
+
+%% 4. Intelligent Data Filtering
+
+filteredData = signal(AI_Output == 1);
+
+originalDataSize = N;
+filteredDataSize = length(filteredData);
+
+%% 5. Calculate Data Reduction
+
+dataReduction = ...
+    (1 - filteredDataSize/originalDataSize) * 100;
+
+%% 6. Wireless Bandwidth Utilization
+
+originalBandwidth = 100;        % Mbps
+remainingBandwidth = ...
+    originalBandwidth * filteredDataSize/originalDataSize;
+
+bandwidthSaving = ...
+    originalBandwidth - remainingBandwidth;
+
+%% 7. Display Results
+
+fprintf('\n===== EDGE AI DATA FILTERING RESULTS =====\n');
+
+fprintf('Total Data Samples       : %d\n', originalDataSize);
+fprintf('Important Data Samples   : %d\n', filteredDataSize);
+
+fprintf('Data Reduction           : %.2f %%\n', ...
+    dataReduction);
+
+fprintf('Original Bandwidth       : %.2f Mbps\n', ...
+    originalBandwidth);
+
+fprintf('Required Bandwidth       : %.2f Mbps\n', ...
+    remainingBandwidth);
+
+fprintf('Bandwidth Saving         : %.2f Mbps\n', ...
+    bandwidthSaving);
+
+%% 8. Plot Original Wireless Data
+
+figure;
+
+plot(t,signal);
+hold on;
+
+plot(t(AI_Output==1), ...
+     signal(AI_Output==1), 'ro');
+
+xlabel('Sample Number');
+ylabel('Signal Amplitude');
+
+title('Edge AI Detection of Important Wireless Data');
+
+legend('Wireless Sensor Data','Important Data');
+
+grid on;
+
+%% 9. Plot Filtered Data
+
+figure;
+
+stem(filteredData);
+
+xlabel('Filtered Sample Index');
+ylabel('Amplitude');
+
+title('Data Transmitted After Edge AI Filtering');
+
+grid on;
+
+%% 10. Bandwidth Comparison
+
+figure;
+
+bar([originalBandwidth remainingBandwidth]);
+
+set(gca,'XTickLabel', ...
+    {'Without Filtering','With Edge AI'});
+
+ylabel('Bandwidth (Mbps)');
+
+title('Wireless Bandwidth Utilization');
+
+grid on;
