@@ -7,3 +7,7 @@
 
 
 # Q2
+<img width="1837" height="747" alt="image" src="https://github.com/user-attachments/assets/a8eeaecd-f8d5-41f4-8377-2584c24f9daa" />
+<img width="1837" height="765" alt="image" src="https://github.com/user-attachments/assets/42019e80-a39b-4245-81d1-b1fe2907d4b6" />
+<img width="1833" height="725" alt="image" src="https://github.com/user-attachments/assets/83bd6b75-e370-4182-971c-34c562f89ce3" />
+<img width="503" height="330" alt="image" src="https://github.com/user-attachments/assets/16d27cc0-a7f2-4184-844f-58ff26c9cc12" />
